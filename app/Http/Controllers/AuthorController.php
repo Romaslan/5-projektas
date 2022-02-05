@@ -15,7 +15,16 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::all();
+        //$authors = Author::all();
+
+        //$authors = Author::sort();
+
+        //$authors = Author::all()->sortBy('name',SORT_REGULAR, true);
+
+        // $authors = Author::orderBY('id','DESC')->get();
+
+        $authors = Author::orderBY('name','ASC')->get();
+
         return view('author.index', ['authors' => $authors]);
     }
 
