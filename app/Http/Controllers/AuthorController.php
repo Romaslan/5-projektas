@@ -6,6 +6,8 @@ use App\Models\Author;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 
+use Illuminate\Http\Request;
+
 class AuthorController extends Controller
 {
     /**
@@ -13,7 +15,7 @@ class AuthorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //$authors = Author::all();
 
@@ -23,9 +25,25 @@ class AuthorController extends Controller
 
         // $authors = Author::orderBY('id','DESC')->get();
 
-        $authors = Author::orderBY('name','ASC')->get();
+        $sortCollum = $request->sortCollum;
+        $sortOrder = $request->sortOrder;
 
-        return view('author.index', ['authors' => $authors]);
+        if(empty($sortCollum) || empty($sortOrder)) {
+            $authors = Author::all();
+        }else {
+            $authors = Author::orderBy($sortCollum, $sortOrder)->get();
+        }
+
+        $select_array = array('id', 'name', 'surname', 'username', 'description');
+
+        // $autorius = $authors->first();
+
+        // $autorius = (array)$autorius;
+        // $autorius = array_keys($autorius);
+
+        
+
+        return view('author.index', ['authors' => $authors, 'sortCollum'=> $sortCollum, 'sortOrder'=>  $sortOrder, 'select_array' => $select_array]);
     }
 
     /**
