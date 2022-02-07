@@ -129,7 +129,8 @@ class AuthorController extends Controller
         //     dd('melas');
         // }
 
-        $search_key = 'a';
+        $search_key = $request->search_key;
+
             $authors = Author::where('description', 'LIKE', '%'.$search_key.'%')
             ->orWhere('name', 'LIKE', '%'.$search_key.'%')
             ->orWhere('surname', 'LIKE', '%'.$search_key.'%')
