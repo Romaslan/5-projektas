@@ -126,8 +126,33 @@ class BookController extends Controller
         // $books = Book::all();
         $author_id = $request->author_id;
         $books = Book::where('author_id', '=', 6)->get();
-
         return view('book.bookfilter',['books' => $books]);
+    }
 
+    public function indexpagination (Request $request) {
+        //kad pagination veiktu reikia panaudot pagination funkcija
+        //jei nera panaudota ta funkcija visada gausi sita error
+        // kad :links does not exist tai jei gauni sita vadinasi paginate nepanaudojai
+
+        // $books = Book::all()->sortBy('id', SORT_REGULAR, true);
+        $sortCollum = $request->sortCollum;
+        $sortOrder = $request->sortOrder;
+
+        $tem_book = Book::all();
+        $book_collumns = array_keys($tem_book->first()->getAttributes());
+
+        if(empty($sortCollum) || empty($sortOrder)) {
+            $books = Book::paginate(15);
+        }else {
+                $books = Book::orderBy($sortCollum, $sortOrder)->paginate(15); 
+
+        }
+
+        $select_array = $book_collumns;
+        // $books = Book::orderBy('id', 'DESC')->get();
+        // $books = Book::orderBy('title', 'DESC')->paginate(15); //pvz
+        // $books = Book::paginate(15);
+
+        return view('book.indexpagination', ['books' => $books, 'sortCollum'=> $sortCollum, 'sortOrder'=>  $sortOrder, 'select_array' => $select_array]);
     }
 }
