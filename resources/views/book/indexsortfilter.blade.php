@@ -36,7 +36,11 @@
                     <option value= "{{$author->id}}">{{$author->name}} {{$author->surname}}</option>
                 @endif 
             @endforeach
-
+        </select>
+        <select name="page_limit">
+            @foreach ($paginationSettings as $setting)
+                <option value={{$setting->value}}>{{$setting->title}}</option>
+            @endforeach
         </select>
         <button class="btn btn-secondary" type="submit">Rikiuok</button>
 </form>
@@ -60,7 +64,7 @@
         @endforeach
      
     </table>
-    
+
     {!! $books->appends(Request::except('page'))->render() !!}
     
 </div>
