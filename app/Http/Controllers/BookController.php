@@ -125,7 +125,7 @@ class BookController extends Controller
 
         // $books = Book::all();
         $author_id = $request->author_id;
-        $books = Book::where('author_id', '=', 6)->get();
+        $books = Book::where('author_id', '=', $author_id)->get();
         return view('book.bookfilter',['books' => $books]);
     }
 
@@ -154,5 +154,37 @@ class BookController extends Controller
         // $books = Book::paginate(15);
 
         return view('book.indexpagination', ['books' => $books, 'sortCollum'=> $sortCollum, 'sortOrder'=>  $sortOrder, 'select_array' => $select_array]);
+    }
+
+    public function indexsortfilter(Request $request) {
+        $sortCollumn = $request->sortCollumn;
+        $sortOrder = $request->sortOrder;
+        $author_id = $request->author_id;
+
+            $page_limit = 2;
+
+            $tem_book = Book::all();
+            $book_collumns = array_keys($tem_book->first()->getAttributes());
+            $select_array = $book_collumns;
+
+            if(empty($sortCollumn) || empty($sortOrder) || empty($author_id) )
+            {
+                $books = Book::paginate($page_limit);
+            } else {
+                if($author_id == 'all') {
+                        $books = Book::orderBy($sortCollumn, $sortOrder)->paginate($page_limit);
+                } else {
+                    $books = Book::where('author_id', '=', $author_id)->orderBy($sortCollumn, $sortOrder)->paginate($page_limit);
+                }
+            }
+
+       
+        // $books = Book::where('author_id', '=', $author_id)->get();
+        // $books = Book::orderBy($sortCollumn, $SortOrder)->get();
+
+        $authors = Author::all();
+
+        return view('book.indexsortfilter', ['books'=>$books, 'authors'=>$authors, 'select_array'=>$select_array, 'sortCollumn'=>$sortCollumn, 'sortOrder'=>$sortOrder, 'author_id'=>$author_id]);
+
     }
 }
