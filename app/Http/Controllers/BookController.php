@@ -204,6 +204,10 @@ class BookController extends Controller
             'author_id'=>$author_id, 
             'paginationSettings'=>$paginationSettings, 
             'page_limit'=>$page_limit]);
+    }
 
+    public function indexsortable() {
+        $books = Book::paginate(15);
+        return view('book.indexsortable');
     }
 }
