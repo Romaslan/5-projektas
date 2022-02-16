@@ -207,7 +207,7 @@ class BookController extends Controller
     }
 
     public function indexsortable() {
-        $books = Book::paginate(15);
-        return view('book.indexsortable');
+        $books = Book::where("author_id", "=", 1)->sortable()->paginate(2);
+        return view('book.indexsortable', ['books' => $books]);
     }
 }
