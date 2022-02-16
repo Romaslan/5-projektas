@@ -164,7 +164,8 @@ class BookController extends Controller
 
         $paginationSettings = PaginationSetting::where('visible', '=', 1)->get();
 
-        $page_limit = 15;
+        $page_limit = $request->page_limit;
+        // $page_limit = 15;
 
             $tem_book = Book::all();
             $book_collumns = array_keys($tem_book->first()->getAttributes());
@@ -175,9 +176,16 @@ class BookController extends Controller
                 $books = Book::paginate($page_limit);
             } else {
                 if($author_id == 'all') {
+                    if($page_limit == 1) {
+                        $books = Book::orderBy($sortCollumn, $sortOrder)->get();
+                    } else
                         $books = Book::orderBy($sortCollumn, $sortOrder)->paginate($page_limit);
                 } else {
-                    $books = Book::where('author_id', '=', $author_id)->orderBy($sortCollumn, $sortOrder)->paginate($page_limit);
+                    if($page_limit == 1) {
+                        $books = Book::where('author_id', '=', $author_id)->orderBy($sortCollumn, $sortOrder)->get();
+                    } else {
+                        $books = Book::where('author_id', '=', $author_id)->orderBy($sortCollumn, $sortOrder)->paginate($page_limit);
+                    }
                 }
             }
 
@@ -187,7 +195,15 @@ class BookController extends Controller
 
         $authors = Author::all();
 
-        return view('book.indexsortfilter', ['books'=>$books, 'authors'=>$authors, 'select_array'=>$select_array, 'sortCollumn'=>$sortCollumn, 'sortOrder'=>$sortOrder, 'author_id'=>$author_id, 'paginationSettings'=>$paginationSettings]);
+        return view('book.indexsortfilter', [
+            'books'=>$books, 
+            'authors'=>$authors, 
+            'select_array'=>$select_array, 
+            'sortCollumn'=>$sortCollumn, 
+            'sortOrder'=>$sortOrder, 
+            'author_id'=>$author_id, 
+            'paginationSettings'=>$paginationSettings, 
+            'page_limit'=>$page_limit]);
 
     }
 }

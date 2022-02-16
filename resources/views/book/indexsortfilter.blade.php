@@ -39,7 +39,11 @@
         </select>
         <select name="page_limit">
             @foreach ($paginationSettings as $setting)
+                @if ($page_limit == $setting->value)
+                <option value={{$setting->value}} selected>{{$setting->title}}</option>
+                @else
                 <option value={{$setting->value}}>{{$setting->title}}</option>
+                @endif
             @endforeach
         </select>
         <button class="btn btn-secondary" type="submit">Rikiuok</button>
@@ -64,8 +68,8 @@
         @endforeach
      
     </table>
-
-    {!! $books->appends(Request::except('page'))->render() !!}
-    
+    @if($page_limit != 1)
+        {!! $books->appends(Request::except('page'))->render() !!}
+    @endif
 </div>
 @endsection
