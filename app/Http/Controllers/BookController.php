@@ -157,6 +157,30 @@ class BookController extends Controller
         return view('book.indexpagination', ['books' => $books, 'sortCollum'=> $sortCollum, 'sortOrder'=>  $sortOrder, 'select_array' => $select_array]);
     }
 
+    private function isPaginateFilter($page_limit, $author_id, $sortCollumn, $sortOrder ) {
+        if($page_limit == 1) {
+          return $books = Book::where('author_id', '=', $author_id)->orderBy($sortCollumn, $sortOrder)->get();
+        }
+        return $books = Book::where('author_id', '=', $author_id)->orderBy($sortCollumn, $sortOrder)->paginate($page_limit);
+    }
+
+    private function isPaginateSort($page_limit, $sortCollumn, $sortOrder) {
+        if($page_limit == 1) {
+            if($sortCollumn == 'author_id')
+            {
+                return $books = Book::select('books.*')->join('authors', 'books.author_id', '=', 'authors.id')->orderBy('authors.name', 'sortOrder')->get();
+            }
+            return $books = Book::orderBy($sortCollumn, $sortOrder)->get();
+            
+        } else {
+            if($sortCollumn == 'author_id') {
+                return $books = Book::select('books.*')->join('authors', 'books.author_id', '=', 'authors.id')->orderBy('authors.name', 'ASC')->paginate($page_limit);
+            }
+            return $books = Book::orderBy($sortCollumn, $sortOrder)->paginate($page_limit);
+        }
+        return 0;
+    }
+
     public function indexsortfilter(Request $request) {
         $sortCollumn = $request->sortCollumn;
         $sortOrder = $request->sortOrder;
@@ -176,16 +200,10 @@ class BookController extends Controller
                 $books = Book::paginate($page_limit);
             } else {
                 if($author_id == 'all') {
-                    if($page_limit == 1) {
-                        $books = Book::orderBy($sortCollumn, $sortOrder)->get();
-                    } else
-                        $books = Book::orderBy($sortCollumn, $sortOrder)->paginate($page_limit);
+                    // $books = Book::select('*')->join('authors', 'books.author_id', '=', 'authors.id')->orderBy('authors.name', 'ASC')->paginate(5);
+                    $books = $this->isPaginateSort($page_limit, $sortCollumn, $sortOrder);
                 } else {
-                    if($page_limit == 1) {
-                        $books = Book::where('author_id', '=', $author_id)->orderBy($sortCollumn, $sortOrder)->get();
-                    } else {
-                        $books = Book::where('author_id', '=', $author_id)->orderBy($sortCollumn, $sortOrder)->paginate($page_limit);
-                    }
+                    $books = $this->isPaginateFilter($page_limit, $author_id, $sortCollumn, $sortOrder);
                 }
             }
 
@@ -209,5 +227,13 @@ class BookController extends Controller
     public function indexsortable() {
         $books = Book::where("author_id", "=", 1)->sortable()->paginate(2);
         return view('book.indexsortable', ['books' => $books]);
+    }
+
+    public function indexadvancedsort() {
+
+        $books = Book::select('*')->join('authors', 'books.author_id', '=', 'authors.id')->orderBy('authors.name', 'ASC')->paginate(5);
+        // dd($books->first());
+
+        return view('book.indexadvancedsort', ['books' => $books]);
     }
 }
