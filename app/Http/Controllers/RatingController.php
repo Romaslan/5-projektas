@@ -104,4 +104,10 @@ class RatingController extends Controller
     {
         //
     }
+    public function createjavascript() {
+        return view('rating.createjavascript');
+    }
+    public function storejavascript(Request $request) {
+        return 0;
+    }
 }
