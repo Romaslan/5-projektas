@@ -224,9 +224,41 @@ class BookController extends Controller
             'page_limit'=>$page_limit]);
     }
 
-    public function indexsortable() {
-        $books = Book::where("author_id", "=", 1)->sortable()->paginate(2);
-        return view('book.indexsortable', ['books' => $books]);
+    public function indexsortable(Request $request) {
+
+        $author_id = $request->author_id;
+        $page_limit = $request->page_limit;
+
+        $sort = $request->sort;
+        $direction = $request->direction;
+
+        $authors = Author::all();
+        $paginationSettings = PaginationSetting::where('visible', '=', 1)->get();
+
+        if(empty($author_id) || $author_id == 'all') {
+            if($page_limit == 1) {
+                $books = Book::sortable()->get();
+            } else {
+                $books = Book::sortable()->paginate($page_limit);
+            }
+        } else {
+            if($page_limit == 1) {
+                $books = Book::where('author_id', '=', $author_id)->sortable()->get();
+            } else {
+                $books = Book::where('author_id', '=', $author_id)->sortable()->paginate($page_limit);
+            }
+        }
+
+        
+        return view('book.indexsortable', [
+            'books' => $books,
+            'authors' => $authors,
+            'paginationSettings'=>$paginationSettings,
+            'author_id'=>$author_id,
+            'page_limit'=>$page_limit,
+            'sort'=>$sort,
+            'direction'=>$direction
+        ]);
     }
 
     public function indexadvancedsort() {
