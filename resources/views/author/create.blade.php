@@ -34,12 +34,12 @@
                 <div class="book-info row">
                     <div class="form-group col-md-6">
                         <label for="book_title">Title</label>
-                        <input class="form-control" type='text' name='book_title[]' />
+                        <input id="book_title" class="form-control" type='text' name='book_title[]' />
                     </div>
                     
                     <div class="form-group col-md-6">
                         <label for="book_description">Description</label>
-                        <textarea class="form-control" name='book_description[]'>
+                        <textarea id="book_description" class="form-control" name='book_description[]'>
                         </textarea>
                     </div>
                 </div>
@@ -55,6 +55,10 @@
         $(document).ready(function() {
             $('#author_newbooks').click(function() {
                 $('.books-info').toggleClass('d-none');
+                //kol kas sita vieta palik uzkomentuota
+                // $('.books-info:not(.book-first)').remove();
+                $('#book_title').val('');
+                $('#book_description').val('');
             })
             $('.add_field').click(function(){
                 $('.books-info').append('<div class="book-info row"><div class="form-group col-md-6"><label for="book_title">Title</label><input class="form-control" type="text" name="book_title[]" /></div><div class="form-group col-md-6"><label for="book_description">Description</label><textarea class="form-control" name="book_description[]"></textarea></div></div>');

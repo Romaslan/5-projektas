@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
+use App\Models\Book;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 
@@ -66,9 +67,29 @@ class AuthorController extends Controller
      * @param  \App\Http\Requests\StoreAuthorRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreAuthorRequest $request)
+    public function store(Request $request)
     {
-        //
+        $author = new Author;
+
+        $author->name=$request->author_name;
+        $author->surname=$request->author_surname;
+        $author->username=$request->author_username;
+        $author->description=$request->author_description;
+        $author->save();
+
+        if($request->author_newbooks) {
+            $books_count = count($request->book_title);
+            
+            for ($i=0; $i< $books_count; $i++){
+                $book = new Book;
+                $book->title=$request->book_title[$i];
+                $book->description=$request->book_description[$i];
+                $book->author_id=$author->id;
+                $book->save();
+            }
+        }
+
+        return redirect()->route('author.index');
     }
 
     /**
