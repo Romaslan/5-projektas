@@ -1,11 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-    .invalid-feedback{
-        display:block;
-    }
-</style>
+
     <div class="container">
         <div class="errors">
             <!-- {{print_r($errors)}}; -->
@@ -66,7 +62,65 @@
             <div class="form-group">
                 <label for="author_newbooks">Add new books?</label>
                 <input id="author_newbooks" type="checkbox" name="author_newbooks" />
+            
+
+                <!-- validaciju testavimas -->
+                <div class="form-group">
+                    <label for="number1">Number 1</label>
+                    <input class="form-control @error('number1') is-invalid @enderror" type='number' name='number1' value="{{ old('number1') }}" />
+                        @error('number1')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
+                <div class="form-group">
+                    <label for="number2">Number 2</label>
+                    <input class="form-control @error('number2') is-invalid @enderror" type='number' name='number2' value="{{ old('number2') }}" />
+                        @error('number2')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
+
+                <!-- datu validacija -->
+
+                <div class="form-group">
+                    <label for="data1">Data 1</label>
+                    <input class="form-control @error('data1') is-invalid @enderror" type='text' name='data1' value="{{ old('data1') }}" />
+                        @error('data1')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
+                <div class="form-group">
+                    <label for="data2">Data 2</label>
+                    <input class="form-control @error('data2') is-invalid @enderror" type='text' name='data2' value="{{ old('data2') }}" />
+                        @error('data2')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
+
+                <!-- telefono numeris -->
+
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input class="form-control @error('phone') is-invalid @enderror" type='text' name='phone' value="{{ old('phone') }}" />
+                        @error('phone')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
             </div>
+
+
+
+
 
             <div class="books-info d-none">
                 <button type="button" class="btn btn-secondary add_field">Add</button>
