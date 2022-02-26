@@ -69,8 +69,17 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        $author = new Author;
+        $request->validate([
+           "author_name" => "required",
+           "author_surname" => "required",
+           "author_username" => "required",
+           "author_description" => "required",
 
+
+
+        ]);
+
+        $author = new Author;
         $author->name=$request->author_name;
         $author->surname=$request->author_surname;
         $author->username=$request->author_username;
@@ -79,7 +88,7 @@ class AuthorController extends Controller
 
         if($request->author_newbooks) {
             $books_count = count($request->book_title);
-            
+
             for ($i=0; $i< $books_count; $i++){
                 $book = new Book;
                 $book->title=$request->book_title[$i];
