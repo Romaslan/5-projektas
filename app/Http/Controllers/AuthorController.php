@@ -175,4 +175,60 @@ class AuthorController extends Controller
             ->get();
             return view('author.search', ['authors' => $authors]);
     }
+
+    public function createvalidate(Request $request){
+
+        // $request->validate([
+        //     'authorsCount'=>'required|integer|get:1'
+        // ]);
+        $authorsCount=$request->authorsCount;
+
+        if(!$authorsCount) {
+            $authorsCount = 3;
+        }
+
+        return view("author.createvalidate", ['authorsCount' => $authorsCount]);
+    }
+
+    public function storevalidate(Request $request){
+
+            // $request->validate([
+            //     // "author_name" => "required|min:2|max:10",
+            //     "author_name" => ['required','min:2','max:10'],
+            //     "author_surname" => "required|alpha",
+            //     "author_username" => "required|alpha_dash",
+            //     "author_description" => "required",
+            // ]);
+
+                //  "author_name" => "required|min:2|max:10"
+                // $request->author_name = "test"
+
+                // author_name[][name]
+
+        
+            $request->validate([
+                "authorName.*.name" => "required|min:2|max:10",
+                "authorSurname.*.surname" => "required|alpha", 
+                "authorUsername.*.username" => "required|alpha_dash", 
+                "authorDescription.*.description" => "required|alpha_num" 
+            ]);
+    
+        $authorsCount = count($request->authorName);
+
+            // // dd($request->author_name);
+
+
+        for($i=0; $i< $authorsCount; $i++ ) {
+            $author = new Author;
+            $author->name = $request->authorName[$i]['name'];
+            $author->surname = $request->authorSurname[$i]['surname'];
+            $author->username = $request->authorUsername[$i]['username'];
+            $author->description = $request->authorDescription[$i]['description'];
+            $author->save(); 
+        }
+    
+    
+        return redirect()->route('author.index');;
+    }
+
 }
