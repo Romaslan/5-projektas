@@ -184,7 +184,7 @@ class AuthorController extends Controller
         $authorsCount=$request->authorsCount;
 
         if(!$authorsCount) {
-            $authorsCount = 3;
+            $authorsCount = 1;
         }
 
         return view("author.createvalidate", ['authorsCount' => $authorsCount]);

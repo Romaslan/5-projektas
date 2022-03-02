@@ -18,9 +18,10 @@
     @endif    
 
 </div>  
+<!-- va viskas turetu veikt, tiesiog mygtukas neturejo id, del to kodas neveike, -->
     <div class="container">
         <div class="addFields">
-            <button class="btn btn-primary">Add Field</button>
+            <button id="addfields" class="btn btn-primary">Add Field</button>
         </div>
         <form method="GET" action="{{route('author.createvalidate')}}">
             @csrf
@@ -35,7 +36,7 @@
                     <div class="row author">
                         <div class="form-group col-md-3">
                             <label for="author_name">Name</label>
-                            <input class="form-control @error("authorName".$i."name") is-invalid @enderror " type='text' name='authorName[][name]' value="{{old("authorName".$i."name") }}" />
+                            <input class="form-control @error('authorName'.$i.'name') is-invalid @enderror " type='text' name='authorName[][name]' value="{{old("authorName".$i."name") }}" />
                             @error("authorName".$i."name")
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -45,7 +46,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="author_surname">Surname</label>
-                            <input class="form-control @error("authorSurname".$i."surname") is-invalid @enderror" type='text' name='authorSurname[][surname]' value="{{ old("authorSurname".$i."surname") }}" />
+                            <input class="form-control @error('authorSurname'. $i.'surname') is-invalid @enderror" type='text' name='authorSurname[][surname]' value="{{ old("authorSurname".$i."surname") }}" />
                             @error("authorSurname".$i."surname")
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -54,7 +55,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="author_username">Username</label>
-                            <input class="form-control @error("authorUsername".$i."username") is-invalid @enderror" type='text' name='authorUsername[][username]' value="{{ old("authorUsername".$i."username") }}"  />
+                            <input class="form-control @error('authorUsername'.$i.'username') is-invalid @enderror" type='text' name='authorUsername[][username]' value="{{ old("authorUsername".$i."username") }}"  />
                             @error("authorUsername".$i."username")
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -63,7 +64,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="author_description">Description</label>
-                            <textarea class="form-control @error("authorDescription".$i."description") is-invalid @enderror" name='authorDescription[][description]'>
+                            <textarea class="form-control @error('authorDescription'.$i.'description') is-invalid @enderror" name='authorDescription[][description]'>
                                 {{ old("authorDescription".$i."description") }}
                             </textarea>
                             @error("authorDescription".$i."description")

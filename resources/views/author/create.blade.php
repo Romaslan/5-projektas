@@ -126,7 +126,7 @@
                 <button type="button" class="btn btn-secondary add_field">Add</button>
                 <button type="button" class="btn btn-danger remove_field">Remove</button>
 
-                <div class="book-info row">
+                <div class="book-info book-first row">
                     <div class="form-group col-md-6">
                         <label for="book_title">Title</label>
                         <input id="book_title" class="form-control" type='text' name='book_title[]' />
@@ -159,7 +159,7 @@
                 $('.books-info').append('<div class="book-info row"><div class="form-group col-md-6"><label for="book_title">Title</label><input class="form-control" type="text" name="book_title[]" /></div><div class="form-group col-md-6"><label for="book_description">Description</label><textarea class="form-control" name="book_description[]"></textarea></div></div>');
             });
             $('.remove_field').click(function(){
-                $('.book-info:last-child').remove();
+                $('.book-info:last-child:not(.book-first)').remove();
             });
         })
     </script>
